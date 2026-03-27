@@ -1,0 +1,21 @@
+---
+type: task
+id: "TASK-001"
+title: "Design system component library"
+status: "in-progress"
+priority: "high"
+project: "Website Redesign"
+assignee: "Sarah Chen"
+labels: ["design", "frontend"]
+estimate: "L"
+due_date: "2026-04-15"
+start_date: "2026-03-20"
+cycle: "Sprint 26-07"
+parent: ""
+blocked_by: []
+blocking: ["TASK-003"]
+created: "2026-03-15"
+updated: "2026-03-25"
+---
+
+Create a comprehensive design system with reusable components including buttons, inputs, cards, modals, and typography scales. Should follow the new brand guidelines.
