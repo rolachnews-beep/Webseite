@@ -26,6 +26,9 @@ Ein Linear-inspiriertes Project Management Dashboard, das einen Obsidian Vault a
 ### Timeline / Gantt
 ![Timeline](public/screenshots/timeline.png)
 
+### Agents
+![Agents](public/screenshots/agents.png)
+
 ---
 
 ## Features
@@ -69,6 +72,13 @@ Ein Linear-inspiriertes Project Management Dashboard, das einen Obsidian Vault a
 - Today-Linie (rot) fuer aktuelles Datum
 - Health-farbcodierte Balken
 
+### Agents (`/agents`)
+- Uebersicht aller Akteure (Agents und Humans) mit Status-Indikatoren
+- Filtert nach All, Agents oder Humans
+- Actor Cards mit Capabilities, Tools und aktuellem Task
+- Capability Matrix -- tabellarische Uebersicht wer was kann
+- Live-Aktualisierung bei Vault-Aenderungen
+
 ### Command Palette
 - Oeffnen mit `Cmd+K` / `Ctrl+K`
 - Suche ueber Tasks, Projekte und Navigation
@@ -85,6 +95,7 @@ Ein Linear-inspiriertes Project Management Dashboard, das einen Obsidian Vault a
 | `G` dann `P` | Projekte |
 | `G` dann `C` | Cycles |
 | `G` dann `T` | Timeline |
+| `G` dann `A` | Agents |
 
 ---
 
@@ -129,7 +140,7 @@ Das Dashboard ist dann unter **http://localhost:3000** erreichbar.
 
 ## Vault-Struktur
 
-Das Dashboard liest und schreibt Markdown-Dateien aus drei Verzeichnissen im Vault:
+Das Dashboard liest und schreibt Markdown-Dateien aus vier Verzeichnissen im Vault:
 
 ```
 vault/
@@ -140,8 +151,12 @@ vault/
 ├── projects/       # Projekt-Dateien
 │   ├── website-redesign.md
 │   └── ...
-└── cycles/         # Sprint/Cycle-Dateien
-    ├── sprint-26-07.md
+├── cycles/         # Sprint/Cycle-Dateien
+│   ├── sprint-26-07.md
+│   └── ...
+└── actors/         # Agent- und Human-Akteure
+    ├── claude-code-1.md
+    ├── sarah-chen.md
     └── ...
 ```
 
@@ -209,6 +224,32 @@ status: "active"               # upcoming | active | completed
 Sprint-Ziele und Notizen...
 ```
 
+### Actor Schema
+
+```yaml
+---
+type: actor
+id: "claude-code-1"
+name: "Claude Code Agent #1"
+kind: "agent"                    # agent | human
+runtime: "claude-code"           # claude-code | claude-cowork | human
+status: "idle"                   # idle | working | offline
+capabilities:
+  - "code-writing"
+  - "file-editing"
+  - "git-operations"
+tools:
+  - "Read"
+  - "Write"
+  - "Edit"
+  - "Bash"
+current_task: ""                 # Task-ID (optional)
+last_heartbeat: "2026-03-27T11:00:00Z"
+---
+
+Beschreibung des Akteurs in Markdown...
+```
+
 ---
 
 ## Wie es funktioniert
@@ -227,7 +268,7 @@ Obsidian Vault (.md Dateien)
 
 1. **Lesen**: Der Vault Reader parst alle `.md`-Dateien mit `gray-matter`, extrahiert YAML-Frontmatter und Markdown-Body, und gibt typisierte TypeScript-Objekte zurueck.
 
-2. **Anzeigen**: Die API Routes (`/api/vault/tasks`, `/api/vault/projects`, `/api/vault/cycles`) stellen die Daten als JSON bereit. React-Hooks (`useTasks`, `useProjects`) laden die Daten in den Zustand.
+2. **Anzeigen**: Die API Routes (`/api/vault/tasks`, `/api/vault/projects`, `/api/vault/cycles`, `/api/vault/actors`) stellen die Daten als JSON bereit. React-Hooks (`useTasks`, `useProjects`) laden die Daten in den Zustand.
 
 3. **Aendern**: Bei Aktionen wie Drag & Drop im Board oder Property-Aenderungen wird ein `PUT`-Request an die API gesendet. Der Vault Writer aktualisiert nur die betroffenen Frontmatter-Felder und laesst den Markdown-Body unberuehrt.
 
@@ -243,6 +284,8 @@ Obsidian Vault (.md Dateien)
 | `PUT` | `/api/vault/projects` | Projekt-Frontmatter aktualisieren |
 | `GET` | `/api/vault/cycles` | Alle Cycles als JSON |
 | `PUT` | `/api/vault/cycles` | Cycle-Frontmatter aktualisieren |
+| `GET` | `/api/vault/actors` | Alle Akteure als JSON |
+| `PUT` | `/api/vault/actors` | Akteur-Frontmatter aktualisieren |
 
 **PUT Request Format:**
 ```json
@@ -332,15 +375,18 @@ Webseite/
 │   ├── cycles/page.tsx            # Cycles Uebersicht
 │   ├── cycles/[id]/page.tsx       # Cycle Detail
 │   ├── timeline/page.tsx          # Gantt Timeline
+│   ├── agents/page.tsx            # Agents Uebersicht
 │   └── api/vault/                 # REST API fuer Vault-Zugriff
 │       ├── tasks/route.ts
 │       ├── projects/route.ts
-│       └── cycles/route.ts
+│       ├── cycles/route.ts
+│       └── actors/route.ts
 ├── components/
 │   ├── layout/                    # App Shell, Sidebar, Header, Command Palette
 │   ├── dashboard/                 # Stats Cards, Charts, Activity Feed
 │   ├── board/                     # Kanban Board, Columns, Cards
-│   └── issues/                    # Issue List, Row, Filters
+│   ├── issues/                    # Issue List, Row, Filters
+│   └── agents/                    # Actor Cards, Capability Matrix
 ├── lib/
 │   ├── vault/                     # Vault Reader & Writer (gray-matter)
 │   ├── store/                     # Zustand Stores (UI, Tasks, Projects)
@@ -351,7 +397,8 @@ Webseite/
 ├── vault/                         # Obsidian Vault (Beispieldaten)
 │   ├── tasks/                     # 12 Beispiel-Tasks
 │   ├── projects/                  # 3 Beispiel-Projekte
-│   └── cycles/                    # 3 Beispiel-Cycles
+│   ├── cycles/                    # 3 Beispiel-Cycles
+│   └── actors/                    # 4 Akteure (Agents + Humans)
 ├── tailwind.config.ts             # Linear-Theme Konfiguration
 ├── next.config.mjs
 ├── tsconfig.json
@@ -362,7 +409,7 @@ Webseite/
 
 ## Eigene Daten verwenden
 
-1. Erstelle einen Ordner mit der Vault-Struktur (`tasks/`, `projects/`, `cycles/`)
+1. Erstelle einen Ordner mit der Vault-Struktur (`tasks/`, `projects/`, `cycles/`, `actors/`)
 2. Lege Markdown-Dateien nach den oben beschriebenen Schemas an
 3. Setze `VAULT_PATH` in `.env.local` auf den Pfad zu deinem Ordner
 4. Starte das Dashboard -- deine Daten erscheinen automatisch
