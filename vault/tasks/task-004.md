@@ -14,6 +14,12 @@ cycle: "Sprint 26-07"
 parent: ""
 blocked_by: []
 blocking: ["TASK-008"]
+required_capabilities: ["code-writing", "database"]
+actor_type: "any"
+claimed_by: "max-mueller"
+claimed_at: "2026-03-24T08:00:00Z"
+dispatch_mode: "push"
+result_summary: ""
 created: "2026-03-20"
 updated: "2026-03-26"
 ---

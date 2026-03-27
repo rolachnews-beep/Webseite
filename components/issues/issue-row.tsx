@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Task, STATUS_LABELS, PRIORITY_LABELS } from "@/lib/types/task";
 import { STATUS_COLORS, PRIORITY_COLORS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { Bot, User, Inbox } from "lucide-react";
 
 interface IssueRowProps {
   task: Task;
@@ -76,13 +77,24 @@ export function IssueRow({ task, index }: IssueRowProps) {
         </span>
       </div>
 
-      {/* Assignee */}
+      {/* Claimed / Assignee */}
       <div className="w-28 flex-shrink-0">
-        <span className="text-xs text-linear-text-secondary truncate block">
-          {task.assignee || (
-            <span className="text-linear-text-tertiary">&mdash;</span>
-          )}
-        </span>
+        {task.claimed_by ? (
+          <span className="inline-flex items-center gap-1 text-xs text-linear-text-secondary truncate">
+            <Bot className="w-3 h-3 text-purple-400 flex-shrink-0" />
+            <span className="truncate">{task.claimed_by}</span>
+          </span>
+        ) : task.assignee ? (
+          <span className="inline-flex items-center gap-1 text-xs text-linear-text-secondary truncate">
+            <User className="w-3 h-3 text-blue-400 flex-shrink-0" />
+            <span className="truncate">{task.assignee}</span>
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1 text-2xs text-linear-text-tertiary">
+            <Inbox className="w-3 h-3 flex-shrink-0" />
+            Unclaimed
+          </span>
+        )}
       </div>
 
       {/* Project */}

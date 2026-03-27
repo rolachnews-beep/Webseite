@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Header } from "@/components/layout/header";
 import { StatsCards } from "@/components/dashboard/stats-cards";
 import { StatusChart } from "@/components/dashboard/status-chart";
@@ -8,14 +8,24 @@ import { PriorityChart } from "@/components/dashboard/priority-chart";
 import { VelocityChart } from "@/components/dashboard/velocity-chart";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { CycleWidget } from "@/components/dashboard/cycle-widget";
+import { DispatchWidget } from "@/components/dashboard/dispatch-widget";
 import { useTasks } from "@/lib/hooks/use-tasks";
 import { useProjects } from "@/lib/hooks/use-projects";
+import { Actor } from "@/lib/types/actor";
 
 export default function DashboardPage() {
   const { tasks, loading: tasksLoading } = useTasks();
   const { cycles, loading: projectsLoading } = useProjects();
+  const [actors, setActors] = useState<Actor[]>([]);
 
   const loading = tasksLoading || projectsLoading;
+
+  useEffect(() => {
+    fetch("/api/vault/actors")
+      .then((res) => res.json())
+      .then(setActors)
+      .catch(console.error);
+  }, []);
 
   const stats = useMemo(() => {
     const today = new Date();
@@ -99,8 +109,11 @@ export default function DashboardPage() {
           <CycleWidget cycles={cycles} tasks={tasks} />
         </div>
 
-        {/* Recent Activity */}
-        <RecentActivity tasks={tasks} />
+        {/* Dispatch & Activity Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DispatchWidget tasks={tasks} actors={actors} />
+          <RecentActivity tasks={tasks} />
+        </div>
       </div>
     </div>
   );
