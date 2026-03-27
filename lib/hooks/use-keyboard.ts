@@ -6,7 +6,7 @@ import { useUIStore } from "../store/ui-store";
 
 export function useKeyboardShortcuts() {
   const router = useRouter();
-  const { setCommandPaletteOpen } = useUIStore();
+  const { setCommandPaletteOpen, setCreateIssueModalOpen } = useUIStore();
   const lastKey = useRef<string | null>(null);
   const lastKeyTime = useRef<number>(0);
 
@@ -40,11 +40,21 @@ export function useKeyboardShortcuts() {
         return;
       }
 
+      // Standalone C: Open create issue modal
+      if (key === "c" && lastKey.current !== "g") {
+        // Use setTimeout to ensure G+C has priority
+        setTimeout(() => {
+          if (lastKey.current === "c") {
+            setCreateIssueModalOpen(true);
+          }
+        }, 300);
+      }
+
       lastKey.current = key;
       lastKeyTime.current = now;
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [router, setCommandPaletteOpen]);
+  }, [router, setCommandPaletteOpen, setCreateIssueModalOpen]);
 }
