@@ -10,6 +10,9 @@ export type TaskPriority = "urgent" | "high" | "medium" | "low" | "none";
 
 export type Estimate = "XS" | "S" | "M" | "L" | "XL";
 
+export type ActorType = "agent" | "human" | "any";
+export type DispatchMode = "push" | "pull";
+
 export interface Task {
   id: string;
   title: string;
@@ -25,6 +28,12 @@ export interface Task {
   parent?: string;
   blocked_by: string[];
   blocking: string[];
+  required_capabilities: string[];
+  actor_type: ActorType;
+  claimed_by: string;
+  claimed_at: string;
+  dispatch_mode: DispatchMode;
+  result_summary: string;
   created: string;
   updated: string;
   content: string;

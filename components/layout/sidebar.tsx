@@ -11,6 +11,7 @@ import {
   Folder,
   RefreshCw,
   GanttChart,
+  Bot,
   ChevronLeft,
   Search,
   Layers,
@@ -24,6 +25,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Folder,
   RefreshCw,
   GanttChart,
+  Bot,
 };
 
 const NAV_SECTIONS = [
@@ -40,6 +42,12 @@ const NAV_SECTIONS = [
       { label: "Projects", href: "/projects", icon: "Folder", shortcut: "G P" },
       { label: "Cycles", href: "/cycles", icon: "RefreshCw", shortcut: "G C" },
       { label: "Timeline", href: "/timeline", icon: "GanttChart", shortcut: "G T" },
+    ],
+  },
+  {
+    title: "Collaboration",
+    items: [
+      { label: "Agents", href: "/agents", icon: "Bot", shortcut: "G A" },
     ],
   },
 ];

@@ -42,4 +42,11 @@ export const NAV_ITEMS = [
   { label: "Projects", href: "/projects", icon: "Folder", shortcut: "G P" },
   { label: "Cycles", href: "/cycles", icon: "RefreshCw", shortcut: "G C" },
   { label: "Timeline", href: "/timeline", icon: "GanttChart", shortcut: "G T" },
+  { label: "Agents", href: "/agents", icon: "Bot", shortcut: "G A" },
 ];
+
+export const ACTOR_STATUS_COLORS: Record<string, string> = {
+  idle: "#27ae60",
+  working: "#f2c94c",
+  offline: "#6b7280",
+};

@@ -14,6 +14,12 @@ cycle: "Sprint 26-07"
 parent: ""
 blocked_by: ["TASK-001"]
 blocking: []
+required_capabilities: ["code-writing", "frontend"]
+actor_type: "any"
+claimed_by: ""
+claimed_at: ""
+dispatch_mode: "pull"
+result_summary: ""
 created: "2026-03-15"
 updated: "2026-03-20"
 ---

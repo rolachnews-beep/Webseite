@@ -14,6 +14,12 @@ cycle: "Sprint 26-07"
 parent: ""
 blocked_by: []
 blocking: ["TASK-003"]
+required_capabilities: ["design", "frontend"]
+actor_type: "any"
+claimed_by: "sarah-chen"
+claimed_at: "2026-03-20T09:00:00Z"
+dispatch_mode: "pull"
+result_summary: ""
 created: "2026-03-15"
 updated: "2026-03-25"
 ---
