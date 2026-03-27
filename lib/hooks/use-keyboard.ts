@@ -35,6 +35,7 @@ export function useKeyboardShortcuts() {
           case "p": router.push("/projects"); break;
           case "c": router.push("/cycles"); break;
           case "t": router.push("/timeline"); break;
+          case "a": router.push("/agents"); break;
         }
         lastKey.current = null;
         return;
