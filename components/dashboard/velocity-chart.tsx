@@ -8,12 +8,23 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip,
+  CartesianGrid,
 } from "recharts";
 import type { Task } from "@/lib/types/task";
 
 interface VelocityChartProps {
   tasks: Task[];
 }
+
+const TOOLTIP_STYLE = {
+  backgroundColor: "#16161a",
+  border: "1px solid #26262a",
+  borderRadius: "8px",
+  fontSize: "12px",
+  color: "#d4d4d8",
+  padding: "8px 12px",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+};
 
 function getWeekLabel(date: Date): string {
   const start = new Date(date);
@@ -51,7 +62,7 @@ export function VelocityChart({ tasks }: VelocityChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="bg-linear-surface border border-linear-border rounded-[6px] p-5">
+      <div className="bg-linear-surface border border-linear-border/60 rounded-lg p-5">
         <h3 className="text-sm font-medium text-linear-text-primary mb-4">
           Velocity
         </h3>
@@ -63,7 +74,7 @@ export function VelocityChart({ tasks }: VelocityChartProps) {
   }
 
   return (
-    <div className="bg-linear-surface border border-linear-border rounded-[6px] p-5">
+    <div className="bg-linear-surface border border-linear-border/60 rounded-lg p-5">
       <h3 className="text-sm font-medium text-linear-text-primary mb-4">
         Velocity
       </h3>
@@ -71,38 +82,46 @@ export function VelocityChart({ tasks }: VelocityChartProps) {
         <AreaChart data={data}>
           <defs>
             <linearGradient id="velocityGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#5e6ad2" stopOpacity={0.3} />
+              <stop offset="0%" stopColor="#5e6ad2" stopOpacity={0.15} />
               <stop offset="100%" stopColor="#5e6ad2" stopOpacity={0} />
             </linearGradient>
           </defs>
+          <CartesianGrid
+            horizontal={true}
+            vertical={false}
+            stroke="#1a1a1e"
+            strokeDasharray="none"
+          />
           <XAxis
             dataKey="label"
-            tick={{ fill: "#5c5c60", fontSize: 11 }}
+            tick={{ fill: "#3a3a40", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
-            tick={{ fill: "#5c5c60", fontSize: 11 }}
+            tick={{ fill: "#3a3a40", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
             allowDecimals={false}
             width={30}
           />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#1b1b1f",
-              border: "1px solid #2e2e32",
-              borderRadius: "6px",
-              fontSize: "12px",
-              color: "#ededef",
-            }}
-          />
+          <Tooltip contentStyle={TOOLTIP_STYLE} itemStyle={{ color: "#d4d4d8" }} />
           <Area
             type="monotone"
             dataKey="completed"
             stroke="#5e6ad2"
-            strokeWidth={2}
+            strokeWidth={1.5}
             fill="url(#velocityGradient)"
+            dot={false}
+            activeDot={{
+              r: 4,
+              fill: "#5e6ad2",
+              stroke: "#16161a",
+              strokeWidth: 2,
+              style: { filter: "drop-shadow(0 0 4px rgba(94,106,210,0.4))" },
+            }}
+            animationDuration={600}
+            animationEasing="ease-out"
           />
         </AreaChart>
       </ResponsiveContainer>
