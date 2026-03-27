@@ -1,36 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
+import { CreateProjectModal } from "@/components/projects/create-project-modal";
 import { Project, PROJECT_STATUS_LABELS, PROJECT_HEALTH_LABELS } from "@/lib/types/project";
 import { Task } from "@/lib/types/task";
 import { HEALTH_COLORS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { Folder, User, Calendar, TrendingUp } from "lucide-react";
+import { Folder, User, Calendar, TrendingUp, Plus } from "lucide-react";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const [projectsRes, tasksRes] = await Promise.all([
+        fetch("/api/vault/projects"),
+        fetch("/api/vault/tasks"),
+      ]);
+      setProjects(await projectsRes.json());
+      setTasks(await tasksRes.json());
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const [projectsRes, tasksRes] = await Promise.all([
-          fetch("/api/vault/projects"),
-          fetch("/api/vault/tasks"),
-        ]);
-        setProjects(await projectsRes.json());
-        setTasks(await tasksRes.json());
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   function getProjectProgress(projectTitle: string) {
     const projectTasks = tasks.filter((t) => t.project === projectTitle);
@@ -53,7 +56,15 @@ export default function ProjectsPage() {
 
   return (
     <div className="h-full flex flex-col">
-      <Header title="Projects" subtitle={`${projects.length} projects`} />
+      <Header title="Projects" subtitle={`${projects.length} projects`}>
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-linear-accent text-white rounded-sm hover:bg-linear-accent-hover transition-colors"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          New Project
+        </button>
+      </Header>
 
       <div className="flex-1 overflow-y-auto p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl">
@@ -153,6 +164,12 @@ export default function ProjectsPage() {
           })}
         </div>
       </div>
+
+      <CreateProjectModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreated={fetchData}
+      />
     </div>
   );
 }

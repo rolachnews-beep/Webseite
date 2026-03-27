@@ -1,37 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
+import { CreateCycleModal } from "@/components/cycles/create-cycle-modal";
 import { Cycle, CYCLE_STATUS_LABELS } from "@/lib/types/cycle";
 import { Task } from "@/lib/types/task";
 import { STATUS_COLORS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { RefreshCw, Calendar, Target, Clock } from "lucide-react";
-import { differenceInDays, parseISO, format } from "date-fns";
+import { RefreshCw, Calendar, Target, Clock, Plus } from "lucide-react";
+import { differenceInDays, parseISO } from "date-fns";
 
 export default function CyclesPage() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const [cyclesRes, tasksRes] = await Promise.all([
+        fetch("/api/vault/cycles"),
+        fetch("/api/vault/tasks"),
+      ]);
+      setCycles(await cyclesRes.json());
+      setTasks(await tasksRes.json());
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const [cyclesRes, tasksRes] = await Promise.all([
-          fetch("/api/vault/cycles"),
-          fetch("/api/vault/tasks"),
-        ]);
-        setCycles(await cyclesRes.json());
-        setTasks(await tasksRes.json());
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   function getCycleTasks(cycleTitle: string) {
     return tasks.filter((t) => t.cycle === cycleTitle);
@@ -74,7 +77,15 @@ export default function CyclesPage() {
 
   return (
     <div className="h-full flex flex-col">
-      <Header title="Cycles" subtitle={`${cycles.length} cycles`} />
+      <Header title="Cycles" subtitle={`${cycles.length} cycles`}>
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-linear-accent text-white rounded-sm hover:bg-linear-accent-hover transition-colors"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          New Cycle
+        </button>
+      </Header>
 
       <div className="flex-1 overflow-y-auto p-6">
         <div className="max-w-4xl">
@@ -135,6 +146,12 @@ export default function CyclesPage() {
           )}
         </div>
       </div>
+
+      <CreateCycleModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreated={fetchData}
+      />
     </div>
   );
 }

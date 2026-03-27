@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   Search,
   Layers,
+  Plus,
 } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -45,7 +46,7 @@ const NAV_SECTIONS = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { sidebarOpen, toggleSidebar, setCommandPaletteOpen } = useUIStore();
+  const { sidebarOpen, toggleSidebar, setCommandPaletteOpen, setCreateIssueModalOpen } = useUIStore();
 
   return (
     <aside
@@ -110,29 +111,43 @@ export function Sidebar() {
                   : pathname.startsWith(item.href);
 
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-2 mx-1 px-2 py-1.5 rounded-sm text-[13px] transition-colors duration-150 relative group",
-                    isActive
-                      ? "bg-linear-surface text-linear-text-primary"
-                      : "text-linear-text-secondary hover:bg-linear-surface-hover hover:text-linear-text-primary"
+                <div key={item.href} className="relative group/nav">
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-2 mx-1 px-2 py-1.5 rounded-sm text-[13px] transition-colors duration-150 relative",
+                      isActive
+                        ? "bg-linear-surface text-linear-text-primary"
+                        : "text-linear-text-secondary hover:bg-linear-surface-hover hover:text-linear-text-primary"
+                    )}
+                  >
+                    {isActive && (
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-4 bg-linear-accent rounded-r" />
+                    )}
+                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    {sidebarOpen && (
+                      <>
+                        <span>{item.label}</span>
+                        <span className="ml-auto text-[10px] text-linear-text-tertiary opacity-0 group-hover/nav:opacity-100 transition-opacity">
+                          {item.shortcut}
+                        </span>
+                      </>
+                    )}
+                  </Link>
+                  {/* Quick create button for Issues */}
+                  {item.label === "Issues" && sidebarOpen && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCreateIssueModalOpen(true);
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded-sm text-linear-text-tertiary hover:text-linear-text-primary hover:bg-linear-surface-hover opacity-0 group-hover/nav:opacity-100 transition-all"
+                      title="Create Issue (C)"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
                   )}
-                >
-                  {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-4 bg-linear-accent rounded-r" />
-                  )}
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  {sidebarOpen && (
-                    <>
-                      <span>{item.label}</span>
-                      <span className="ml-auto text-[10px] text-linear-text-tertiary opacity-0 group-hover:opacity-100 transition-opacity">
-                        {item.shortcut}
-                      </span>
-                    </>
-                  )}
-                </Link>
+                </div>
               );
             })}
           </div>

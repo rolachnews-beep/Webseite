@@ -2,6 +2,7 @@
 
 import { Sidebar } from "./sidebar";
 import { CommandPalette } from "./command-palette";
+import { CreateIssueModal } from "@/components/issues/create-issue-modal";
 import { useKeyboardShortcuts } from "@/lib/hooks/use-keyboard";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
@@ -12,6 +13,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <main className="flex-1 overflow-y-auto">{children}</main>
       <CommandPalette />
+      <CreateIssueModal />
     </div>
   );
 }
