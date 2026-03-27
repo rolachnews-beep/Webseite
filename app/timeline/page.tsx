@@ -175,7 +175,7 @@ export default function TimelinePage() {
               {columns.map((_, i) => (
                 <div
                   key={i}
-                  className="absolute top-0 bottom-0 border-r border-linear-border/30"
+                  className="absolute top-0 bottom-0 border-r border-linear-border/20"
                   style={{ left: i * colWidth }}
                 />
               ))}
@@ -184,10 +184,10 @@ export default function TimelinePage() {
             {/* Today line */}
             {todayOffset > 0 && todayOffset < totalWidth && (
               <div
-                className="absolute top-0 bottom-0 w-px bg-priority-urgent z-20"
-                style={{ left: todayOffset }}
+                className="absolute top-0 bottom-0 w-px bg-priority-urgent/70 z-20"
+                style={{ left: todayOffset, borderLeft: "1px dashed" }}
               >
-                <div className="absolute -top-0 left-1/2 -translate-x-1/2 bg-priority-urgent text-white text-[9px] px-1 rounded-sm">
+                <div className="absolute -top-0 left-1/2 -translate-x-1/2 bg-priority-urgent/80 text-white text-[8px] px-1.5 py-px rounded-sm font-medium">
                   Today
                 </div>
               </div>
@@ -206,16 +206,16 @@ export default function TimelinePage() {
                       style={{
                         left: bar.left,
                         width: bar.width,
-                        backgroundColor: HEALTH_COLORS[project.health] + "20",
-                        border: `1px solid ${HEALTH_COLORS[project.health]}40`,
+                        backgroundColor: HEALTH_COLORS[project.health] + "18",
+                        border: `1px solid ${HEALTH_COLORS[project.health]}30`,
                       }}
                     >
                       {/* Progress fill */}
                       <div
-                        className="absolute inset-0 rounded-sm"
+                        className="absolute inset-0 rounded-sm transition-all duration-300"
                         style={{
                           width: `${progress}%`,
-                          backgroundColor: HEALTH_COLORS[project.health] + "40",
+                          backgroundColor: HEALTH_COLORS[project.health] + "50",
                         }}
                       />
                       <div className="relative px-2 flex items-center h-full">
@@ -229,7 +229,7 @@ export default function TimelinePage() {
 
                       {/* Tooltip */}
                       <div className="absolute bottom-full left-0 mb-1 hidden group-hover:block z-30">
-                        <div className="bg-linear-surface border border-linear-border rounded-sm px-3 py-2 shadow-lg text-xs whitespace-nowrap">
+                        <div className="bg-[#16161a] border border-[#26262a] rounded-lg px-3 py-2 shadow-lg shadow-black/40 text-xs whitespace-nowrap">
                           <div className="font-medium text-linear-text-primary">{project.title}</div>
                           <div className="text-linear-text-tertiary mt-1">
                             {project.start_date} → {project.target_date}

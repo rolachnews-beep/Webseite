@@ -19,22 +19,22 @@ export function StatsCards({ cards }: StatsCardsProps) {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-linear-surface border border-linear-border rounded-[6px] p-4"
+          className="bg-linear-surface border border-linear-border/60 rounded-lg p-5 transition-colors duration-200 hover:bg-linear-surface-hover group"
         >
           <span className="text-xs text-linear-text-secondary font-medium">
             {card.label}
           </span>
           <div className="flex items-end justify-between mt-2">
-            <span className="text-2xl font-semibold text-linear-text-primary tabular-nums">
+            <span className="text-2xl font-semibold text-linear-text-primary font-mono tabular-nums">
               {card.value}
             </span>
             {card.trend && (
               <div
                 className={cn(
-                  "flex items-center gap-1 text-xs font-medium",
-                  card.trend.direction === "up" && "text-status-done",
-                  card.trend.direction === "down" && "text-status-cancelled",
-                  card.trend.direction === "neutral" && "text-linear-text-tertiary"
+                  "flex items-center gap-1 text-2xs font-medium px-1.5 py-0.5 rounded-sm",
+                  card.trend.direction === "up" && "text-status-done bg-status-done/10",
+                  card.trend.direction === "down" && "text-status-cancelled bg-status-cancelled/10",
+                  card.trend.direction === "neutral" && "text-linear-text-tertiary bg-linear-surface-hover"
                 )}
               >
                 {card.trend.direction === "up" && (

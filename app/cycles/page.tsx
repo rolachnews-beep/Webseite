@@ -165,7 +165,7 @@ function CycleCard({
       href={`/cycles/${cycle.id}`}
       className={cn(
         "block linear-card p-5 linear-hover",
-        isActive && "border-linear-accent/30"
+        isActive && "border-linear-accent/20"
       )}
     >
       <div className="flex items-start justify-between mb-4">
@@ -202,17 +202,24 @@ function CycleCard({
 
         {/* Progress Ring */}
         <svg width="48" height="48" viewBox="0 0 48 48" className="flex-shrink-0">
-          <circle cx="24" cy="24" r="20" fill="none" stroke="#2e2e32" strokeWidth="3" />
+          <defs>
+            <filter id={`glow-${cycle.id}`}>
+              <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor={isActive ? "#5e6ad2" : "#50a770"} floodOpacity="0.25" />
+            </filter>
+          </defs>
+          <circle cx="24" cy="24" r="20" fill="none" stroke="#1e1e23" strokeWidth="2.5" />
           <circle
             cx="24"
             cy="24"
             r="20"
             fill="none"
-            stroke={isActive ? "#5e6ad2" : "#27ae60"}
-            strokeWidth="3"
+            stroke={isActive ? "#5e6ad2" : "#50a770"}
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeDasharray={`${(progress.percent / 100) * 125.7} 125.7`}
             transform="rotate(-90 24 24)"
+            filter={`url(#glow-${cycle.id})`}
+            className="transition-all duration-500"
           />
           <text
             x="24"
@@ -228,14 +235,14 @@ function CycleCard({
 
       {/* Progress bar */}
       <div className="mb-3">
-        <div className="h-1.5 bg-linear-bg rounded-full overflow-hidden flex">
+        <div className="h-2 bg-linear-bg rounded overflow-hidden flex gap-px">
           {Object.entries(statusDistribution).map(([status, count]) => (
             <div
               key={status}
-              className="h-full"
+              className="h-full first:rounded-l last:rounded-r transition-all duration-300"
               style={{
                 width: `${(count / progress.total) * 100}%`,
-                backgroundColor: STATUS_COLORS[status as Task["status"]] || "#8a8a8e",
+                backgroundColor: STATUS_COLORS[status as Task["status"]] || "#6b6b70",
               }}
             />
           ))}

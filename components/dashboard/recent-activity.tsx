@@ -28,12 +28,12 @@ export function RecentActivity({ tasks }: RecentActivityProps) {
   const recentTasks = useMemo(() => {
     return [...tasks]
       .sort((a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime())
-      .slice(0, 5);
+      .slice(0, 8);
   }, [tasks]);
 
   if (recentTasks.length === 0) {
     return (
-      <div className="bg-linear-surface border border-linear-border rounded-[6px] p-5">
+      <div className="bg-linear-surface border border-linear-border/60 rounded-lg p-5">
         <h3 className="text-sm font-medium text-linear-text-primary mb-4">
           Recent Activity
         </h3>
@@ -45,17 +45,17 @@ export function RecentActivity({ tasks }: RecentActivityProps) {
   }
 
   return (
-    <div className="bg-linear-surface border border-linear-border rounded-[6px] p-5">
+    <div className="bg-linear-surface border border-linear-border/60 rounded-lg p-5">
       <h3 className="text-sm font-medium text-linear-text-primary mb-4">
         Recent Activity
       </h3>
-      <div className="space-y-1">
+      <div className="divide-y divide-linear-border/30">
         {recentTasks.map((task) => (
           <div
             key={task.id}
-            className="flex items-center gap-3 py-2 px-2 rounded-[4px] hover:bg-linear-surface-hover transition-colors"
+            className="flex items-center gap-3 py-2.5 px-2 rounded-[4px] hover:bg-linear-surface-hover transition-colors duration-150"
           >
-            <span className="text-xs text-linear-text-tertiary font-mono w-16 flex-shrink-0 truncate">
+            <span className="text-xs text-linear-text-tertiary font-mono w-16 flex-shrink-0 truncate tabular-nums">
               {task.id}
             </span>
             <span className="text-sm text-linear-text-primary truncate flex-1">
@@ -63,14 +63,14 @@ export function RecentActivity({ tasks }: RecentActivityProps) {
             </span>
             <div className="flex items-center gap-1.5 flex-shrink-0">
               <span
-                className="w-2 h-2 rounded-full flex-shrink-0"
+                className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                 style={{ backgroundColor: STATUS_COLORS[task.status] }}
               />
               <span className="text-xs text-linear-text-secondary">
                 {STATUS_LABELS[task.status]}
               </span>
             </div>
-            <span className="text-xs text-linear-text-tertiary flex-shrink-0 w-14 text-right">
+            <span className="text-xs text-linear-text-tertiary flex-shrink-0 w-14 text-right font-mono tabular-nums">
               {timeAgo(task.updated)}
             </span>
           </div>

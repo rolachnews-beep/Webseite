@@ -2,26 +2,26 @@ import { TaskStatus, TaskPriority } from "./types/task";
 import { ProjectHealth } from "./types/project";
 
 export const STATUS_COLORS: Record<TaskStatus, string> = {
-  backlog: "#8a8a8e",
-  todo: "#e2e2e3",
-  "in-progress": "#f2c94c",
-  "in-review": "#2d9cdb",
-  done: "#27ae60",
-  cancelled: "#ef4444",
+  backlog: "#6b6b70",
+  todo: "#d4d4d8",
+  "in-progress": "#e5c07b",
+  "in-review": "#5B9BD5",
+  done: "#50a770",
+  cancelled: "#e55561",
 };
 
 export const PRIORITY_COLORS: Record<TaskPriority, string> = {
-  urgent: "#f76b6b",
-  high: "#e89b3e",
-  medium: "#f2c94c",
+  urgent: "#e55561",
+  high: "#d4915a",
+  medium: "#e5c07b",
   low: "#6b7280",
   none: "#5c5c60",
 };
 
 export const HEALTH_COLORS: Record<ProjectHealth, string> = {
-  "on-track": "#27ae60",
-  "at-risk": "#e89b3e",
-  "off-track": "#f76b6b",
+  "on-track": "#50a770",
+  "at-risk": "#d4915a",
+  "off-track": "#e55561",
 };
 
 export const LABEL_COLORS: Record<string, string> = {
