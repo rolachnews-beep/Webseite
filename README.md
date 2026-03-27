@@ -6,6 +6,28 @@ Ein Linear-inspiriertes Project Management Dashboard, das einen Obsidian Vault a
 
 ---
 
+## Screenshots
+
+### Dashboard Home
+![Dashboard](public/screenshots/dashboard.png)
+
+### Kanban Board
+![Board](public/screenshots/board.png)
+
+### Issues Liste
+![Issues](public/screenshots/issues.png)
+
+### Projekte
+![Projects](public/screenshots/projects.png)
+
+### Cycles / Sprints
+![Cycles](public/screenshots/cycles.png)
+
+### Timeline / Gantt
+![Timeline](public/screenshots/timeline.png)
+
+---
+
 ## Features
 
 ### Dashboard Home
