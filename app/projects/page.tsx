@@ -79,7 +79,7 @@ export default function ProjectsPage() {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-linear-accent/20 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded bg-linear-accent/15 flex items-center justify-center">
                       <Folder className="w-3.5 h-3.5 text-linear-accent" />
                     </div>
                     <h3 className="text-sm font-semibold text-linear-text-primary group-hover:text-linear-accent transition-colors">
@@ -87,10 +87,10 @@ export default function ProjectsPage() {
                     </h3>
                   </div>
                   <span
-                    className="text-2xs px-1.5 py-0.5 rounded-sm font-medium"
+                    className="text-2xs px-2 py-0.5 rounded-sm font-medium"
                     style={{
                       color: HEALTH_COLORS[project.health],
-                      backgroundColor: HEALTH_COLORS[project.health] + "15",
+                      backgroundColor: HEALTH_COLORS[project.health] + "12",
                     }}
                   >
                     {PROJECT_HEALTH_LABELS[project.health]}
@@ -99,7 +99,7 @@ export default function ProjectsPage() {
 
                 {/* Description */}
                 {project.description && (
-                  <p className="text-xs text-linear-text-tertiary mb-3 line-clamp-2">
+                  <p className="text-xs text-linear-text-secondary mb-3 line-clamp-2">
                     {project.description}
                   </p>
                 )}
@@ -114,9 +114,9 @@ export default function ProjectsPage() {
                       {progress.percent}%
                     </span>
                   </div>
-                  <div className="h-1.5 bg-linear-bg rounded-full overflow-hidden">
+                  <div className="h-2 bg-linear-bg rounded overflow-hidden">
                     <div
-                      className="h-full rounded-full transition-all duration-300"
+                      className="h-full rounded transition-all duration-300"
                       style={{
                         width: `${progress.percent}%`,
                         backgroundColor: HEALTH_COLORS[project.health],

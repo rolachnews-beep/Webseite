@@ -33,11 +33,11 @@
 
 @layer utilities {
   .linear-card {
-    @apply bg-linear-surface border border-linear-border rounded-[6px];
+    @apply bg-linear-surface border border-linear-border/60 rounded-lg;
   }
 
   .linear-hover {
-    @apply transition-colors duration-150 hover:bg-linear-surface-hover;
+    @apply transition-colors duration-200 hover:bg-linear-surface-hover;
   }
 
   .linear-focus {
