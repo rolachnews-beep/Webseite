@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  * {
+    @apply border-linear-border;
+  }
+
+  body {
+    @apply bg-linear-bg text-linear-text-primary font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-linear-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-linear-border-light;
+  }
+}
+
+@layer utilities {
+  .linear-card {
+    @apply bg-linear-surface border border-linear-border rounded-[6px];
+  }
+
+  .linear-hover {
+    @apply transition-colors duration-150 hover:bg-linear-surface-hover;
+  }
+
+  .linear-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-linear-accent focus:ring-offset-0;
+  }
+}
